@@ -1,18 +1,22 @@
 import { View, Text, StyleSheet, Button } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { myContext } from '../App'
 const Home = () => {
+
+  const {refresh,setRefresh}=useContext(myContext);
+
   const [display,setDisplay]=useState({});
   
+  // Get data to display when app loaded
   useEffect(()=>{
     async function fetchData(){
       try{
         let keys=await AsyncStorage.getAllKeys();
         if(keys.length){
           let obj=await AsyncStorage.getItem(keys[Math.floor(Math.random() * (keys.length))])
-          console.log(obj);
+          console.log('Home: '+obj);
           setDisplay(JSON.parse(obj));
         }
       }catch(e){
@@ -20,7 +24,7 @@ const Home = () => {
       }
     }
     fetchData();
-  },[])
+  },[refresh])
 
   const deleteAll=()=>{
     AsyncStorage.getAllKeys()

@@ -1,13 +1,14 @@
-import { View, Text, TextInput,StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, TextInput,StyleSheet, TouchableOpacity,Keyboard } from 'react-native'
+import React, { useContext, useState } from 'react'
 import { Picker } from '@react-native-picker/picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
-
+import { myContext } from '../App'
 const Post = () => {
   const [title,setTitle]=useState('');
   const [text,setText]=useState('');
   const [mood,setMood]=useState('Happy');
+  const {refresh,setRefresh} = useContext(myContext);
 
   const postHandler=async()=>{
     try{
@@ -20,6 +21,11 @@ const Post = () => {
       }
       await AsyncStorage.setItem(obj.key,JSON.stringify(obj))
       console.log('success');
+      setTitle('')
+      setText('')
+      setMood('Happy')
+      Keyboard.dismiss()
+      refresh?setRefresh(false):setRefresh(true);
     }catch(e){
       console.log(e);
     }

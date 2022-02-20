@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 //  React   //
-import React from 'react';
+import React, { createContext, useState } from 'react';
 import {View,Text,Button} from 'react-native';
 // Icons  //
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -15,18 +15,28 @@ import Browse from './components/Browse';
 import Post from './components/Post';
 import Mood from './components/Mood';
 import Settings from './components/Settings';
+
+export const myContext=React.createContext({
+  refresh:false,
+  setRefresh:()=>{}
+});
 const App =()=>{
+  const [refresh,setRefresh]=useState(false);
+  const value = {refresh,setRefresh}
   return(
     <NavigationContainer>
       {/* screenOptions can take an object or a function with navigation and route props */}
       {/* Check out route props documentation for more info */}
-      <Tab.Navigator screenOptions={screenOptions}>
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Browse" component={Browse} />
-        <Tab.Screen name="Post" component={Post} />
-        <Tab.Screen name="Mood" component={Mood} />
-        <Tab.Screen name="Settings" component={Settings} />
-      </Tab.Navigator>
+      <myContext.Provider value={value}>
+        <Tab.Navigator screenOptions={screenOptions}>
+
+          <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="Browse" component={Browse} />
+          <Tab.Screen name="Post" component={Post} />
+          <Tab.Screen name="Mood" component={Mood} />
+          <Tab.Screen name="Settings" component={Settings} />
+        </Tab.Navigator>
+      </myContext.Provider>
     </NavigationContainer>
   )
 };
