@@ -35,7 +35,7 @@ const Post = () => {
     <View style={styles.body}>
       <Text style={styles.pageTitle}>What's on your mind?</Text>
       <TextInput style={styles.inputTitle} multiline={true} onChangeText={(text)=>setTitle(text)} value={title} placeholder='Title' />
-      <TextInput style={styles.input} multiline={true} textAlignVertical='top' onChangeText={(text)=>setText(text)} value={text} />
+      <TextInput style={styles.input} multiline={true} textAlignVertical='top' onChangeText={(text)=>setText(text)} value={text} maxLength={1000} />
       <Picker
         selectedValue={mood}
         onValueChange={(itemValue)=>setMood(itemValue)}>

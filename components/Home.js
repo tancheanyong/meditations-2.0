@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button,ScrollView } from 'react-native'
 import React, { useEffect, useState,useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { myContext } from '../App'
 const Home = () => {
-
+  //everytime refresh changes, pages update
   const {refresh,setRefresh}=useContext(myContext);
 
   const [display,setDisplay]=useState({});
@@ -32,7 +32,7 @@ const Home = () => {
         .then(() => alert('success'))
   }
   return (
-    <View style={styles.body}>
+    <ScrollView style={styles.body}>
       <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.card}>
         <Text style={styles.cardTitle}>{display.title}</Text>
         <View style={styles.cardInfo}>
@@ -44,7 +44,7 @@ const Home = () => {
         </Text>
       </LinearGradient>
       <Button title='delete all thoughts' onPress={()=>deleteAll()} />
-    </View>
+    </ScrollView>
   )
 }
 
@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   },
   card: {
     marginVertical: 30,
-    marginHorizontal: 50,
+    marginHorizontal: 30,
     padding: 20,
     borderColor: 'white',
     borderWidth: 1,
-    borderRadius: 10
+    borderRadius: 10,
   },
   cardTitle: {
     color: 'white',
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
   cardText: {
     color: 'white',
     fontSize: 20,
-    marginVertical: 20
+    marginVertical: 20,
+    textAlign:'justify'
   }
 })
 
