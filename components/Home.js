@@ -7,7 +7,7 @@ const Home = () => {
   //everytime refresh changes, pages update
   const {refresh,setRefresh}=useContext(myContext);
 
-  const [display,setDisplay]=useState({});
+  const [display,setDisplay]=useState();
   
   // Get data to display when app loaded
   useEffect(()=>{
@@ -26,40 +26,42 @@ const Home = () => {
     fetchData();
   },[refresh])
 
-  const deleteAll=()=>{
-    AsyncStorage.getAllKeys()
-        .then(keys => AsyncStorage.multiRemove(keys))
-        .then(() => alert('success'))
-  }
   return (
     <ScrollView style={styles.body}>
-      <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.card}>
-        <Text style={styles.cardTitle}>{display.title}</Text>
-        <View style={styles.cardInfo}>
-          <Text style={styles.cardInfoText}>{display.mood}</Text>
-          <Text style={styles.cardInfoText}>{display.key}</Text>
-        </View>
-        <Text style={styles.cardText}>
-          {display.text}
-        </Text>
-      </LinearGradient>
-      <Button title='delete all thoughts' onPress={()=>deleteAll()} />
+      <Text style={styles.pageTitle}>Good Morning!</Text>
+      {display?
+        (<View style={styles.card}>
+          <Text style={styles.cardTitle}>{display.title}</Text>
+          <View style={styles.cardInfo}>
+            <Text style={styles.cardInfoText}>{display.mood}</Text>
+            <Text style={styles.cardInfoText}>{display.key}</Text>
+          </View>
+          <Text style={styles.cardText}>
+            {display.text}
+          </Text>
+        </View>)
+      :null}
     </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: 'gray',
+    backgroundColor: '#E4D4C8',
     flex: 1
   },
+  pageTitle:{
+    fontSize:25,
+    textAlign:'center',
+    color:'#523A28',
+    margin:20,
+    fontWeight:'bold'
+  },
   card: {
-    marginVertical: 30,
     marginHorizontal: 30,
     padding: 20,
-    borderColor: 'white',
-    borderWidth: 1,
     borderRadius: 10,
+    backgroundColor:'#A47551'
   },
   cardTitle: {
     color: 'white',
@@ -71,7 +73,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   cardInfoText: {
-    color: 'lightgray',
+    color: '#D0B49F',
+    fontSize:17,
+    marginTop:5
   },
   cardText: {
     color: 'white',
@@ -80,5 +84,10 @@ const styles = StyleSheet.create({
     textAlign:'justify'
   }
 })
+
+//Sand Dollar :#E4D4C8
+//Tan         :#D0B49F
+//Brown       :#A47551
+//Carafe      :#523A28
 
 export default Home

@@ -5,17 +5,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { myContext } from '../App'
 const Browse = () => {
-  //for edit text trigger
+  //for edit text 
   const [editText,setEditText]=useState(false);
   const [text,setText]=useState('');
   //for modal visibility
   const [modalVisible,setModalVisible]=useState(false);
-  const [modalKey,setModalKey]=useState(0);
+  const [currentModalCard,setcurrentModalCard]=useState({});
   //for page refresh
   const {refresh,setRefresh}=useContext(myContext);
 
-  //for storing data for display
-  const [data, setData] = useState(null);
+  //arrOfCards stores an array of objects, where each object is one card
+  const [arrOfCards, setArrOfCards] = useState();
 
   //get all cards from storage 
   useEffect(() => {
@@ -25,7 +25,7 @@ const Browse = () => {
        let result = await AsyncStorage.multiGet(keys);
        let json = result.map(card=>JSON.parse(card[1]));
        console.log(json);
-       setData(json.reverse())
+       setArrOfCards(json.reverse())
       } catch (e) {
         console.log(e)
       }
@@ -34,9 +34,19 @@ const Browse = () => {
     
   }, [refresh])
 
-  const editHandler = async(key)=>{
+  const modalHandler=(card)=>{
+    setModalVisible(true);
+    setcurrentModalCard({
+      'key':card.key,
+      'title':card.title,
+      'text':card.text,
+      'mood':card.mood
+    })
+  }
+
+  const editHandler = async(card)=>{
     try{  
-      await AsyncStorage.mergeItem(key, JSON.stringify({'text':text}));
+      await AsyncStorage.mergeItem(card.key, JSON.stringify({'text':text}));
       refresh?setRefresh(false):setRefresh(true);
       setEditText(false);
     }catch(e){
@@ -44,13 +54,26 @@ const Browse = () => {
     }
   }
 
+  const deleteHandler=async(key)=>{
+    try{
+      await AsyncStorage.removeItem(key);
+      setModalVisible(false);
+      refresh?setRefresh(false):setRefresh(true);
+    }catch(e){
+      console.log(e);
+    }
+  }
+
   return (
     <ScrollView style={styles.body}>
-      {/* data is an array of objects, and each object is a card */}
-      {data ? data.map(card => {
+      <Text style={styles.pageTitle}>Browse</Text>
+      {/* map through arrOfCards, for each card, renders a Pressable */}
+      {arrOfCards ? arrOfCards.map(card => {
         return (
-          <Pressable key={card.key} onPress={()=>{setModalVisible(true);setModalKey(data.indexOf(card))}}>
-            <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.card}>
+          // On Pressable(card) pressed, show modal and pass in modalKey to know which modal to show 
+          // On this error, perhaps just usestate a card state, and store the entire card data inside of it to be accessed by modal, instead of using modalkey to access arrOfCards data
+          <Pressable key={card.key} onPress={()=>modalHandler(card)}>
+            <View style={styles.card}>
               <Text style={styles.cardTitle}>{card.title}</Text>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardInfoText}>{card.mood}</Text>
@@ -59,47 +82,51 @@ const Browse = () => {
               <Text style={styles.cardText}>
                 {card.text}
               </Text>
-            </LinearGradient>
+            </View>
           </Pressable>
         )
       }) : null}
-      
+
+      {/* Modal */}
+     
       <Modal visible={modalVisible} animationType='fade' transparent={true} onRequestClose={()=>{setEditText(false);setModalVisible(false)}}>
         <ScrollView style={styles.modal}>
-          <LinearGradient key={data?data[modalKey].key:null} colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.card}>
-            <Text style={styles.cardTitle}>{data?data[modalKey].title:null}</Text>
+          {/* show the card in arrOfCards on modalKey index */}
+          <View key={currentModalCard.key} style={styles.card}>
+            <Text style={styles.cardTitle}>{currentModalCard.title}</Text>
             <View style={styles.cardInfo}>
-              <Text style={styles.cardInfoText}>{data?data[modalKey].mood:null}</Text>
-              <Text style={styles.cardInfoText}>{data?data[modalKey].key:null}</Text>
+              <Text style={styles.cardInfoText}>{currentModalCard.mood}</Text>
+              <Text style={styles.cardInfoText}>{currentModalCard.key}</Text>
             </View>
-            {/* default text shown, hides when edit button is pressed */}
+            {/* default modal card text shown, hides when edit button is pressed */}
             {editText?null:(
               <Text style={styles.cardText}>
-                {data?data[modalKey].text:null}
+                {currentModalCard.text}
               </Text>
             )}
-            {/* default hidden, show when edit button pressed */}
+            {/* text input default hidden, show when edit button pressed */}
             {editText?(
-              <TextInput style={styles.editText} multiline={true} textAlignVertical='top' onChangeText={(text)=>setText(text)} value={text} maxLength={1000}  />
+              <TextInput style={styles.editText} multiline={true} textAlignVertical='top' onChangeText={(txt)=>setText(txt)} value={text} maxLength={1000}  />
             ):null}
+
             {/* showing different buttons depending on edit */}
             {editText?(
               <View style={styles.modalButtons}>
-                <TouchableOpacity onPress={()=>editHandler(data[modalKey].key)}>
+                <TouchableOpacity onPress={()=>editHandler(currentModalCard)}>
                   <Text><Ionicons name='save-outline' size={30} color='lightgreen' /></Text>
                 </TouchableOpacity>
               </View>
             ):(
               <View style={styles.modalButtons}>
-                <TouchableOpacity onPress={()=>{setText(data[modalKey].text);setEditText(true)}}>
-                  <Text><Ionicons name='create-outline' size={30} color='white' /></Text>
+                <TouchableOpacity onPress={()=>{setText(currentModalCard.text);setEditText(true)}}>
+                  <Text><Ionicons name='create-outline' size={30} color='#523A28' /></Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>deleteHandler(data[modalKey].text)} >
-                  <Text><Ionicons name='trash-outline' size={30} color='red' /></Text>
+                <TouchableOpacity onPress={()=>deleteHandler(currentModalCard.key)} >
+                  <Text><Ionicons name='trash-outline' size={30} color='#523A28' /></Text>
                 </TouchableOpacity>
               </View>
             )}
-          </LinearGradient>
+          </View>
         </ScrollView>
       </Modal>
     </ScrollView>
@@ -108,16 +135,22 @@ const Browse = () => {
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: 'gray',
+    backgroundColor: '#E4D4C8',
     flex: 1
+  },
+  pageTitle:{
+    fontSize:25,
+    textAlign:'center',
+    color:'#523A28',
+    margin:20,
+    fontWeight:'bold'
   },
   card: {
     marginVertical: 5,
     marginHorizontal: 20,
     padding: 20,
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 10
+    borderRadius: 10,
+    backgroundColor:'#A47551'
   },
   cardTitle: {
     color: 'white',
@@ -129,7 +162,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   cardInfoText: {
-    color: 'lightgray',
+    color: '#D0B49F',
+    fontSize:17,
+    marginTop:5
   },
   cardText: {
     color: 'white',

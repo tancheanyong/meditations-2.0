@@ -46,30 +46,38 @@ const screenOptions = ({route})=>({
   tabBarIcon:()=>{
     switch (route.name){
       case 'Home':
-        return <Ionicons name='home' size={20} color='white'/>;
+        return <Ionicons name='home-outline' size={25} color='#523A28'/>;
         break;
       case 'Browse':
-        return <Ionicons name='search' size={20} color='white'/>;
+        return <Ionicons name='search' size={25} color='#523A28'/>;
         break;
       case 'Post':
-        return <Ionicons name='add-circle-outline' size={20} color='white'/>;
+        return <Ionicons name='add-circle-outline' size={25} color='#523A28'/>;
         break;
       case 'Mood':
-        return <Ionicons name='bar-chart' size={20} color='white'/>;
+        return <Ionicons name='bar-chart-outline' size={25} color='#523A28'/>;
         break;
       case 'Settings':
-        return <Ionicons name='settings-outline' size={20} color='white'/>;
+        return <Ionicons name='settings-outline' size={25} color='#523A28'/>;
         break;
     }
   },
   tabBarStyle:{
-    backgroundColor:'black'
+    backgroundColor:'#D0B49F'
   },
-  headerStyle:{
-    backgroundColor:'black'
-  },
-  headerTintColor:'white',
-  headerTitleAlign:'center'
+  tabBarShowLabel:false,
+  headerShown:false
 })
+
+//color schemes
+//Dusty Rose: #E4D4C8
+//Mauve     : #A47786
+//Brown     : #533440
+//Blue Gray : #9DB6CC
+
+//Sand Dollar :#E4D4C8
+//Tan         :#D0B49F
+//Brown       :#A47551
+//Carafe      :#523A28
 
 export default App;

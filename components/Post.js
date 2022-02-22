@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Picker } from '@react-native-picker/picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { myContext } from '../App'
 const Post = () => {
   const [title,setTitle]=useState('');
@@ -34,17 +35,19 @@ const Post = () => {
   return (
     <View style={styles.body}>
       <Text style={styles.pageTitle}>What's on your mind?</Text>
-      <TextInput style={styles.inputTitle} multiline={true} onChangeText={(text)=>setTitle(text)} value={title} placeholder='Title' />
-      <TextInput style={styles.input} multiline={true} textAlignVertical='top' onChangeText={(text)=>setText(text)} value={text} maxLength={1000} />
-      <Picker
-        selectedValue={mood}
-        onValueChange={(itemValue)=>setMood(itemValue)}>
-        <Picker.Item label="Happy" value="Happy" />
-        <Picker.Item label="Sad" value="Sad" />
-      </Picker>
+      <TextInput style={styles.inputTitle} multiline={true} onChangeText={(text)=>setTitle(text)} value={title} maxLength={50} placeholder='Title' />
+      <TextInput style={styles.input} multiline={true} textAlignVertical='top' onChangeText={(text)=>setText(text)} value={text} maxLength={1000} placeholder='Your words...' />
       <View style={styles.btnContainer}>
+        <View style={styles.picker}>
+          <Picker
+            selectedValue={mood}
+            onValueChange={(itemValue)=>setMood(itemValue)}>
+            <Picker.Item label="Happy" value="Happy" color='#523A28' />
+            <Picker.Item label="Sad" value="Sad" color='#523A28' />
+          </Picker>
+        </View>
         <TouchableOpacity style={styles.saveBtn} onPress={()=>postHandler()}>
-          <Text style={styles.btnText}>Save this thought</Text>
+          <Text style={styles.btnText}><Ionicons name='save-outline' size={30} color='lightgreen' /></Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -53,47 +56,54 @@ const Post = () => {
 
 const styles = StyleSheet.create({
   body:{
-    backgroundColor:'gray',
+    backgroundColor:'#E4D4C8',
     flex:1,
   },
   pageTitle:{
     fontSize:25,
     textAlign:'center',
-    color:'white',
+    color:'#523A28',
     margin:20,
     fontWeight:'bold'
   },
   inputTitle:{
-    fontSize:17,
-    borderWidth:2,
-    borderColor:'blue',
-    backgroundColor:'lightgray',
+    fontSize:20,
+    backgroundColor:'#D0B49F',
     marginHorizontal:20,
     borderRadius:10,
     marginBottom:5,
     padding:10
   },
   input:{
-    borderWidth:2,
-    borderColor:'blue',
-    backgroundColor:'lightgray',
+    backgroundColor:'#D0B49F',
     marginHorizontal:20,
+    marginBottom:5,
     borderRadius:10,
     flex:1,
-    padding:10
+    padding:10,
+    fontSize:17
   },
   btnContainer:{
+    flexDirection:'row',
+    marginHorizontal:20,
+    marginBottom:5,
     alignItems:'center'
   },
+  picker:{
+    flex:3,
+    borderRadius:10,
+    backgroundColor:'#D0B49F'
+  },
   saveBtn:{
-    backgroundColor:'lightblue',
+    flex:1,
+    backgroundColor:'#A47551',
     padding:10,
-    width:200,
     borderRadius:10,
   },
   btnText:{
     textAlign:'center',
-    fontSize:20
+    fontSize:20,
+    color:'white'
   }
 
 })
