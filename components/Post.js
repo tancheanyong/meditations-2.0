@@ -8,7 +8,7 @@ import { myContext } from '../App'
 const Post = () => {
   const [title,setTitle]=useState('');
   const [text,setText]=useState('');
-  const [mood,setMood]=useState('Happy');
+  const [mood,setMood]=useState('Calm');
   const {refresh,setRefresh} = useContext(myContext);
 
   const postHandler=async()=>{
@@ -24,7 +24,7 @@ const Post = () => {
       console.log('success');
       setTitle('')
       setText('')
-      setMood('Happy')
+      setMood('Calm')
       Keyboard.dismiss()
       refresh?setRefresh(false):setRefresh(true);
     }catch(e){
@@ -42,12 +42,18 @@ const Post = () => {
           <Picker
             selectedValue={mood}
             onValueChange={(itemValue)=>setMood(itemValue)}>
+            <Picker.Item label="Loving" value="Loving" color='#523A28' />
+            <Picker.Item label="Excited" value="Excited" color='#523A28' />
             <Picker.Item label="Happy" value="Happy" color='#523A28' />
+            <Picker.Item label="Calm" value="Calm" color='#523A28' />
+            <Picker.Item label="Numb" value="Numb" color='#523A28' />
             <Picker.Item label="Sad" value="Sad" color='#523A28' />
+            <Picker.Item label="Scared" value="Scared" color='#523A28' />
+            <Picker.Item label="Angry" value="Angry" color='#523A28' />
           </Picker>
         </View>
         <TouchableOpacity style={styles.saveBtn} onPress={()=>postHandler()}>
-          <Text style={styles.btnText}><Ionicons name='save-outline' size={30} color='lightgreen' /></Text>
+          <Text style={styles.btnText}><Ionicons name='save-outline' size={30} color='#D0B49F' /></Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -92,6 +98,7 @@ const styles = StyleSheet.create({
   picker:{
     flex:3,
     borderRadius:10,
+    marginRight:5,
     backgroundColor:'#D0B49F'
   },
   saveBtn:{

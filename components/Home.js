@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button,ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Button,ScrollView,ImageBackground } from 'react-native'
 import React, { useEffect, useState,useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -27,28 +27,29 @@ const Home = () => {
   },[refresh])
 
   return (
-    <ScrollView style={styles.body}>
-      <Text style={styles.pageTitle}>Good Morning!</Text>
-      {display?
-        (<View style={styles.card}>
-          <Text style={styles.cardTitle}>{display.title}</Text>
-          <View style={styles.cardInfo}>
-            <Text style={styles.cardInfoText}>{display.mood}</Text>
-            <Text style={styles.cardInfoText}>{display.key}</Text>
-          </View>
-          <Text style={styles.cardText}>
-            {display.text}
-          </Text>
-        </View>)
-      :null}
-    </ScrollView>
+    <ImageBackground source={require('./img/jeremy-yap-jn-HaGWe4yw-unsplash.jpg')} style={{flex:1,}} >
+      <LinearGradient colors={['rgba(228, 212, 200, 1)','rgba(228, 212, 200, 0.2)','rgba(228, 212, 200, 0.5)']} style={styles.body}>
+        <Text style={styles.pageTitle}>Good Morning!</Text>
+        {display?
+          (<View style={styles.card}>
+            <Text style={styles.cardTitle}>{display.title}</Text>
+            <View style={styles.cardInfo}>
+              <Text style={styles.cardInfoText}>{display.mood}</Text>
+              <Text style={styles.cardInfoText}>{display.key}</Text>
+            </View>
+            <Text style={styles.cardText}>
+              {display.text}
+            </Text>
+          </View>)
+        :null}
+      </LinearGradient>
+    </ImageBackground>
   )
 }
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: '#E4D4C8',
-    flex: 1
+    flex: 1,
   },
   pageTitle:{
     fontSize:25,
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     padding: 20,
     borderRadius: 10,
-    backgroundColor:'#A47551'
+    backgroundColor:'rgba(164, 117, 81,0.8)'
   },
   cardTitle: {
     color: 'white',
