@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { myContext } from '../App'
+
 const Browse = () => {
   //for edit text 
   const [editText,setEditText]=useState(false);
@@ -11,28 +12,9 @@ const Browse = () => {
   //for modal visibility
   const [modalVisible,setModalVisible]=useState(false);
   const [currentModalCard,setcurrentModalCard]=useState({});
-  //for page refresh
-  const {refresh,setRefresh}=useContext(myContext);
 
-  //arrOfCards stores an array of objects, where each object is one card
-  const [arrOfCards, setArrOfCards] = useState();
-
-  //get all cards from storage 
-  useEffect(() => {
-    async function getData() {
-      try {
-       let keys = await AsyncStorage.getAllKeys();
-       let result = await AsyncStorage.multiGet(keys);
-       let json = result.map(card=>JSON.parse(card[1]));
-       console.log(json);
-       setArrOfCards(json.reverse())
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    getData();
-    
-  }, [refresh])
+  //arrOfCards passed down from App.js through context
+  const {arrOfCards} = useContext(myContext);
 
   const modalHandler=(card)=>{
     setModalVisible(true);
@@ -68,7 +50,7 @@ const Browse = () => {
     <ScrollView style={styles.body}>
       <Text style={styles.pageTitle}>Browse</Text>
       {/* map through arrOfCards, for each card, renders a Pressable */}
-      {arrOfCards ? arrOfCards.map(card => {
+      {arrOfCards ? arrOfCards.reverse().map(card => {
         return (
           // On Pressable(card) pressed, show modal and pass in modalKey to know which modal to show 
           // On this error, perhaps just usestate a card state, and store the entire card data inside of it to be accessed by modal, instead of using modalkey to access arrOfCards data

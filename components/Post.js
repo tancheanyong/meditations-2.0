@@ -9,7 +9,7 @@ const Post = () => {
   const [title,setTitle]=useState('');
   const [text,setText]=useState('');
   const [mood,setMood]=useState('Calm');
-  const {refresh,setRefresh} = useContext(myContext);
+  const {postNewCard} = useContext(myContext);
 
   const postHandler=async()=>{
     try{
@@ -20,13 +20,11 @@ const Post = () => {
         'text':text,
         'mood':mood
       }
-      await AsyncStorage.setItem(obj.key,JSON.stringify(obj))
-      console.log('success');
+      postNewCard(obj);
       setTitle('')
       setText('')
       setMood('Calm')
       Keyboard.dismiss()
-      refresh?setRefresh(false):setRefresh(true);
     }catch(e){
       console.log(e);
     }

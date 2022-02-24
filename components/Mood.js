@@ -4,25 +4,23 @@ import {VictoryPie} from 'victory-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { myContext } from '../App'
 const Mood = () => {
-  const {refresh,setRefresh} = useContext(myContext);
+
+  const {arrOfCards}=useContext(myContext);
+  
+  //used to store moods extracted from arrOfCards
   const [arrOfMoods,setArrOfMoods]=useState([]);
+
   //get all cards and pass only their moods into moodHandler
   useEffect(() => {
-    async function getData() {
       try {
-       let keys = await AsyncStorage.getAllKeys();
-       let result = await AsyncStorage.multiGet(keys);
-       let json = result.map(cardWithKey=>JSON.parse(cardWithKey[1]));
-       let moods=json.map(card=>card.mood)
+       let moods=arrOfCards.map(card=>card.mood)
        console.log(moods);
        moodHandler(moods);
       } catch (e) {
         console.log(e)
       }
-    }
-    getData();
-    
-  }, [refresh])
+    }, [arrOfCards])
+
   //count the number of each mood and set arrOfMoods state with data which will be used by the pie chart
   const moodHandler=(moods)=>{
     let lovingCount=0;

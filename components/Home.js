@@ -1,30 +1,29 @@
 import { View, Text, StyleSheet, Button,ScrollView,ImageBackground } from 'react-native'
 import React, { useEffect, useState,useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
 import { myContext } from '../App'
 const Home = () => {
-  //everytime refresh changes, pages update
-  const {refresh,setRefresh}=useContext(myContext);
-
+  //page will auto re-render everytime a context changes
+  const {arrOfCards}=useContext(myContext);
+  
   const [display,setDisplay]=useState();
   
   // Get data to display when app loaded
   useEffect(()=>{
-    async function fetchData(){
       try{
-        let keys=await AsyncStorage.getAllKeys();
-        if(keys.length){
-          let obj=await AsyncStorage.getItem(keys[Math.floor(Math.random() * (keys.length))])
-          console.log('Home: '+obj);
-          setDisplay(JSON.parse(obj));
+        if(arrOfCards.length){
+          //this will run after App.js re-render when json finally arrives for setArrOfCards.
+          setDisplay(arrOfCards[Math.floor(Math.random() * (arrOfCards.length))]);
+          console.log('yes');
+        }else{
+          //this would be display at first, as arrOfCards is still awaiting to be set.
+          console.log('nothing');
         }
       }catch(e){
-        console.log(e)
+        console.log('Home '+e)
       }
-    }
-    fetchData();
-  },[refresh])
+  },[arrOfCards])
 
   return (
     <ImageBackground source={require('./img/jeremy-yap-jn-HaGWe4yw-unsplash.jpg')} style={{flex:1,}} >
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     padding: 20,
     borderRadius: 10,
-    backgroundColor:'rgba(164, 117, 81,0.8)'
+    backgroundColor:'rgba(164, 117, 81,0.9)'
   },
   cardTitle: {
     color: 'white',
