@@ -9,7 +9,7 @@ const Mood = () => {
 
   return (
     <View style={styles.body}>
-      <Text>Your mood for the last: </Text>
+      
       <MoodPiechart />
       
     </View>

@@ -1,35 +1,52 @@
-import { View, Text, StyleSheet, Button,ScrollView,ImageBackground } from 'react-native'
-import React, { useEffect, useState,useContext } from 'react'
+import { View, Text, StyleSheet, Button, ScrollView, ImageBackground } from 'react-native'
+import React, { useEffect, useState, useContext } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 
 import { myContext } from '../App'
 const Home = () => {
   //page will auto re-render everytime a context changes
-  const {arrOfCards}=useContext(myContext);
-  
-  const [display,setDisplay]=useState();
-  
+  //postNewCard for testing only
+  const { arrOfCards,postNewCard } = useContext(myContext);
+
+  const [display, setDisplay] = useState();
+
   // Get data to display when app loaded
-  useEffect(()=>{
-      try{
-        if(arrOfCards.length){
-          //this will run after App.js re-render when json finally arrives for setArrOfCards.
-          setDisplay(arrOfCards[Math.floor(Math.random() * (arrOfCards.length))]);
-          console.log('yes');
-        }else{
-          //this would be display at first, as arrOfCards is still awaiting to be set.
-          console.log('nothing');
-        }
-      }catch(e){
-        console.log('Home '+e)
+  useEffect(() => {
+    try {
+      if (arrOfCards.length) {
+        //this will run after App.js re-render when json finally arrives for setArrOfCards.
+        setDisplay(arrOfCards[Math.floor(Math.random() * (arrOfCards.length))]);
+        console.log('yes');
+      } else {
+        //this would be display at first, as arrOfCards is still awaiting to be set.
+        console.log('nothing');
       }
-  },[arrOfCards])
+    } catch (e) {
+      console.log('Home ' + e)
+    }
+  }, [arrOfCards])
+
+  //For testing only
+  const testArr = [
+    {
+      'key': '01 02 2022',
+      'title': '01 02 2022',
+      'text':'More than a week ago',
+      'mood': 'Angry'
+    },
+    {
+      'key': '01 01 2022',
+      'title': '01 01 2022',
+      'text':'More than a month ago',
+      'mood': 'Excited'
+    }
+  ]
 
   return (
-    <ImageBackground source={require('./img/jeremy-yap-jn-HaGWe4yw-unsplash.jpg')} style={{flex:1,}} >
-      <LinearGradient colors={['rgba(228, 212, 200, 1)','rgba(228, 212, 200, 0.2)','rgba(228, 212, 200, 0.5)']} style={styles.body}>
+    <ImageBackground source={require('./img/jeremy-yap-jn-HaGWe4yw-unsplash.jpg')} style={{ flex: 1, }} >
+      <LinearGradient colors={['rgba(228, 212, 200, 1)', 'rgba(228, 212, 200, 0.2)', 'rgba(228, 212, 200, 0.5)']} style={styles.body}>
         <Text style={styles.pageTitle}>Good Morning!</Text>
-        {display?
+        {display ?
           (<View style={styles.card}>
             <Text style={styles.cardTitle}>{display.title}</Text>
             <View style={styles.cardInfo}>
@@ -40,8 +57,12 @@ const Home = () => {
               {display.text}
             </Text>
           </View>)
-        :null}
+          : null}
       </LinearGradient>
+      <Button title='Press to put test cards in storage' onPress={()=>{
+        testArr.map(obj=>postNewCard(obj));
+        console.log('test cards entered');
+      }}/>
     </ImageBackground>
   )
 }
@@ -50,18 +71,18 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
   },
-  pageTitle:{
-    fontSize:25,
-    textAlign:'center',
-    color:'#523A28',
-    margin:20,
-    fontWeight:'bold'
+  pageTitle: {
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#523A28',
+    margin: 20,
+    fontWeight: 'bold'
   },
   card: {
     marginHorizontal: 30,
     padding: 20,
     borderRadius: 10,
-    backgroundColor:'rgba(164, 117, 81,0.9)'
+    backgroundColor: 'rgba(164, 117, 81,0.9)'
   },
   cardTitle: {
     color: 'white',
@@ -74,14 +95,14 @@ const styles = StyleSheet.create({
   },
   cardInfoText: {
     color: '#D0B49F',
-    fontSize:17,
-    marginTop:5
+    fontSize: 17,
+    marginTop: 5
   },
   cardText: {
     color: 'white',
     fontSize: 20,
     marginVertical: 20,
-    textAlign:'justify'
+    textAlign: 'justify'
   }
 })
 
