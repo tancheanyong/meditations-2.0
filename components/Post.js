@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   inputTitle:{
     fontSize:20,
     backgroundColor:'#D0B49F',
+    color:'black',
     marginHorizontal:20,
     borderRadius:10,
     marginBottom:5,
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
   },
   input:{
     backgroundColor:'#D0B49F',
+    color:'black',
     marginHorizontal:20,
     marginBottom:5,
     borderRadius:10,

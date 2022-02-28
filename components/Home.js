@@ -6,7 +6,7 @@ import { myContext } from '../App'
 const Home = () => {
   //page will auto re-render everytime a context changes
   //postNewCard for testing only
-  const { arrOfCards,postNewCard } = useContext(myContext);
+  const { arrOfCards, postNewCard } = useContext(myContext);
 
   const [display, setDisplay] = useState();
 
@@ -29,40 +29,46 @@ const Home = () => {
   //For testing only
   const testArr = [
     {
-      'key': '01 02 2022',
+      'key': '01 02 2022, 01:00:38',
       'title': '01 02 2022',
-      'text':'More than a week ago',
+      'text': 'More than a week ago',
       'mood': 'Angry'
     },
     {
-      'key': '01 01 2022',
+      'key': '01 01 2022, 01:00:38',
       'title': '01 01 2022',
-      'text':'More than a month ago',
+      'text': 'More than a month ago',
       'mood': 'Excited'
     }
   ]
 
   return (
     <ImageBackground source={require('./img/jeremy-yap-jn-HaGWe4yw-unsplash.jpg')} style={{ flex: 1, }} >
+
       <LinearGradient colors={['rgba(228, 212, 200, 1)', 'rgba(228, 212, 200, 0.2)', 'rgba(228, 212, 200, 0.5)']} style={styles.body}>
-        <Text style={styles.pageTitle}>Good Morning!</Text>
-        {display ?
-          (<View style={styles.card}>
-            <Text style={styles.cardTitle}>{display.title}</Text>
-            <View style={styles.cardInfo}>
-              <Text style={styles.cardInfoText}>{display.mood}</Text>
-              <Text style={styles.cardInfoText}>{display.key}</Text>
-            </View>
-            <Text style={styles.cardText}>
-              {display.text}
-            </Text>
-          </View>)
-          : null}
+        <ScrollView style={{ flex: 1 }}>
+          <Text style={styles.pageTitle}>Good Morning!</Text>
+          {display ?
+            (<View style={styles.card}>
+              <Text style={styles.cardTitle}>{display.title}</Text>
+              <View style={styles.cardInfo}>
+                <Text style={styles.cardInfoText}>{display.mood}</Text>
+                <Text style={styles.cardInfoText}>{display.key}</Text>
+              </View>
+              <Text style={styles.cardText}>
+                {display.text}
+              </Text>
+            </View>)
+            : null}
+        </ScrollView>
       </LinearGradient>
-      <Button title='Press to put test cards in storage' onPress={()=>{
-        testArr.map(obj=>postNewCard(obj));
-        console.log('test cards entered');
-      }}/>
+      {/* <Button
+        title='Press to put test cards in storage'
+        onPress={() => {
+          testArr.map(obj => postNewCard(obj));
+          console.log('test cards entered');
+        }}
+      /> */}
     </ImageBackground>
   )
 }

@@ -10,15 +10,15 @@ const MoodPiechart = () => {
   const { arrOfCards } = useContext(myContext);
   //used to store moods extracted from arrOfCards
   const [arrOfMoods, setArrOfMoods] = useState([]);
-
+  //For user to select their moods for the past 'daySelect' days
   const [daySelect, setDaySelect] = useState(7)
-  //get all cards and pass only their moods into moodHandler
+
+  //get all cards and filter through daySelect and pass only their moods into moodHandler
   useEffect(() => {
     try {
       console.log('today: '+moment());
       let todayMinusDaySelect=moment()-(daySelect*24*60*60*1000);
       let cardsForTheLast = arrOfCards.filter(card=>moment(card.key,'DD MM YYYY, kk:mm:ss').valueOf()>todayMinusDaySelect?card:null)
-      console.log(cardsForTheLast);
       let moods = cardsForTheLast.map(card => card.mood)
       console.log(moods);
       moodHandler(moods);
@@ -132,7 +132,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   headerText: {
-    fontSize: 20
+    fontSize: 20,
+    color:'#523A28'
   }
 })
 

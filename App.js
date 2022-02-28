@@ -38,7 +38,7 @@ const App = () => {
         let json = result.map(cardWithKeys => JSON.parse(cardWithKeys[1]));
         //arrOfCards display [] at first, because it is still awaiting promise.
         //setState is async, so it'll wait for json, and after it finally has json, it'll re-render this page, which you can log by console.log inside another useEffect hook that updates on arrOfCards changes.
-        setArrOfCards(json.reverse()) //reversed so that array is arranged new to old
+        setArrOfCards(json) 
         console.log(arrOfCards);
       } catch (e) {
         console.log(e)

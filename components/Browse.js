@@ -5,15 +5,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { myContext } from '../App'
 import CurrentModal from './CurrentModal'
+import { Picker } from '@react-native-picker/picker'
 
 const Browse = () => {
-
+  //For sorting
+  const [sortType,setSortType]=useState('Newest First')
+  const [sortedCards,setSortedCards]=useState([])
   //for modal visibility
   const [modalVisible, setModalVisible] = useState(false);
   const [currentModalCard, setcurrentModalCard] = useState({});
 
   //arrOfCards passed down from App.js through context
   const { arrOfCards } = useContext(myContext);
+  //sort browsing list
+  useEffect(()=>{
+    //clone the arrOfCards array, so that using reverse() won't affect the original arrOfCards state
+    let arrOfCardsVar = [...arrOfCards];
+    switch (sortType) {
+      case 'Newest First':
+        setSortedCards(arrOfCardsVar.reverse())
+        break;
+      case 'Oldest First':
+        setSortedCards(arrOfCards)
+        break;
+    }
+  },[sortType,arrOfCards])
 
   const modalHandler = (card) => {
     setModalVisible(true);
@@ -28,8 +44,21 @@ const Browse = () => {
   return (
     <ScrollView style={styles.body}>
       <Text style={styles.pageTitle}>Browse</Text>
+
+      <View style={styles.sortContainer}>
+        <Picker
+          selectedValue={sortType}
+          onValueChange={(itemValue) => setSortType(itemValue)}
+          style={styles.sortBtn}
+          mode='dropdown'
+          itemStyle={{ fontSize: 30 }}>
+          <Picker.Item label="Newest First" value='Newest First' color='#523A28' />
+          <Picker.Item label="Oldest First" value="Oldest First" color='#523A28' />
+        </Picker>
+      </View>
+
       {/* map through arrOfCards, for each card, renders a Pressable */}
-      {arrOfCards ? arrOfCards.map(card => {
+      {sortedCards ? sortedCards.map(card => {
         return (
           // On Pressable(card) pressed, show modal and pass in modalKey to know which modal to show 
           // On this error, perhaps just usestate a card state, and store the entire card data inside of it to be accessed by modal, instead of using modalkey to access arrOfCards data
@@ -64,8 +93,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     color: '#523A28',
-    margin: 20,
+    marginTop: 20,
     fontWeight: 'bold'
+  },
+  sortContainer:{
+    alignItems:'flex-end',
+  },
+  sortBtn:{
+    width:200,
   },
   card: {
     marginVertical: 5,
