@@ -53,8 +53,8 @@ const Browse = () => {
           style={styles.sortBtn}
           mode='dropdown'
           itemStyle={{ fontSize: 30 }}>
-          <Picker.Item label="Newest First" value='Newest First' color='#523A28' />
-          <Picker.Item label="Oldest First" value="Oldest First" color='#523A28' />
+          <Picker.Item label="Newest First" value='Newest First' />
+          <Picker.Item label="Oldest First" value="Oldest First" />
         </Picker>
       </View>
 

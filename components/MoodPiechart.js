@@ -16,16 +16,16 @@ const MoodPiechart = () => {
   //get all cards and filter through daySelect and pass only their moods into moodHandler
   useEffect(() => {
     try {
-      console.log('today: '+moment());
-      let todayMinusDaySelect=moment()-(daySelect*24*60*60*1000);
-      let cardsForTheLast = arrOfCards.filter(card=>moment(card.key,'DD MM YYYY, kk:mm:ss').valueOf()>todayMinusDaySelect?card:null)
+      console.log('today: ' + moment());
+      let todayMinusDaySelect = moment() - (daySelect * 24 * 60 * 60 * 1000);
+      let cardsForTheLast = arrOfCards.filter(card => moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() > todayMinusDaySelect ? card : null)
       let moods = cardsForTheLast.map(card => card.mood)
       console.log(moods);
       moodHandler(moods);
     } catch (e) {
       console.log(e)
     }
-  }, [arrOfCards,daySelect])
+  }, [arrOfCards, daySelect])
 
   //count the number of each mood and set arrOfMoods state with data which will be used by the pie chart
   const moodHandler = (moods) => {
@@ -80,7 +80,7 @@ const MoodPiechart = () => {
     ])
   }
 
- 
+
 
   const chartHeight = Dimensions.get('window').height * 0.4;
   return (
@@ -93,11 +93,11 @@ const MoodPiechart = () => {
             onValueChange={(itemValue) => setDaySelect(itemValue)}
             style={styles.dropdownBtn}
             mode='dropdown'
-            itemStyle={{fontSize:30}}>
-            <Picker.Item label="1" value={1} color='#523A28' />
-            <Picker.Item label="7" value={7} color='#523A28' />
-            <Picker.Item label="30" value={30} color='#523A28' />
-            <Picker.Item label="all" value={100000} color='#523A28' />
+            itemStyle={{ fontSize: 30 }}>
+            <Picker.Item label="1" value={1} />
+            <Picker.Item label="7" value={7} />
+            <Picker.Item label="30" value={30} />
+            <Picker.Item label="all" value={100000} />
           </Picker>
         </View>
         <Text style={styles.headerText}>day</Text>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 20
   },
   dropdownBtn: {
-    width:100,
+    width: 100,
   },
   dropdownStyle: {
     width: 30,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    color:'#523A28'
+    color: '#523A28'
   }
 })
 
