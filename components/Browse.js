@@ -37,7 +37,8 @@ const Browse = () => {
       'key': card.key,
       'title': card.title,
       'text': card.text,
-      'mood': card.mood
+      'mood': card.mood,
+      'date':card.date
     })
   }
 
@@ -67,7 +68,7 @@ const Browse = () => {
               <Text style={styles.cardTitle}>{card.title}</Text>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardInfoText}>{card.mood}</Text>
-                <Text style={styles.cardInfoText}>{card.key}</Text>
+                <Text style={styles.cardInfoText}>{card.date}</Text>
               </View>
               <Text style={styles.cardText}>
                 {card.text}

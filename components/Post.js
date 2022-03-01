@@ -1,5 +1,5 @@
 import { View, Text, TextInput,StyleSheet, TouchableOpacity,Keyboard } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Picker } from '@react-native-picker/picker'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import moment from 'moment'
@@ -11,14 +11,18 @@ const Post = () => {
   const [mood,setMood]=useState('Calm');
   const {postNewCard} = useContext(myContext);
 
+  const month=[]
+
   const postHandler=async()=>{
     try{
-      let dateTime=moment().format('DD MM YYYY, kk:mm:ss');
+      let key=moment().format('YYYY MM DD, kk:mm:ss');
+      let dateTime=moment().format('DD MMMM YYYY, kk:mm:ss');
       let obj={
-        'key':dateTime,
+        'key':key,
         'title':title,
         'text':text,
-        'mood':mood
+        'mood':mood,
+        'date':dateTime
       }
       postNewCard(obj);
       setTitle('')

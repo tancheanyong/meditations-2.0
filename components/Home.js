@@ -29,13 +29,13 @@ const Home = () => {
   //For testing only
   const testArr = [
     {
-      'key': '01 02 2022, 01:00:38',
-      'title': '01 02 2022',
+      'key': '2022 02 28',
+      'title': '0',
       'text': 'More than a week ago',
       'mood': 'Angry'
     },
     {
-      'key': '01 01 2022, 01:00:38',
+      'key': '2021 12 25',
       'title': '01 01 2022',
       'text': 'More than a month ago',
       'mood': 'Excited'
@@ -53,7 +53,7 @@ const Home = () => {
               <Text style={styles.cardTitle}>{display.title}</Text>
               <View style={styles.cardInfo}>
                 <Text style={styles.cardInfoText}>{display.mood}</Text>
-                <Text style={styles.cardInfoText}>{display.key}</Text>
+                <Text style={styles.cardInfoText}>{display.date}</Text>
               </View>
               <Text style={styles.cardText}>
                 {display.text}
@@ -62,13 +62,14 @@ const Home = () => {
             : null}
         </ScrollView>
       </LinearGradient>
-      {/* <Button
+      <Button
         title='Press to put test cards in storage'
         onPress={() => {
           testArr.map(obj => postNewCard(obj));
           console.log('test cards entered');
         }}
-      /> */}
+      />
+      
     </ImageBackground>
   )
 }
