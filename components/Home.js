@@ -29,16 +29,11 @@ const Home = () => {
   //For testing only
   const testArr = [
     {
-      'key': '2022 02 28',
+      'key': '2022 02 25, 00:00:00',
       'title': '0',
-      'text': 'More than a week ago',
-      'mood': 'Angry'
-    },
-    {
-      'key': '2021 12 25',
-      'title': '01 01 2022',
-      'text': 'More than a month ago',
-      'mood': 'Excited'
+      'text': 'A day ago',
+      'mood': 'Sad',
+      'date':'25 feb 2022, 00:00:00'
     }
   ]
 

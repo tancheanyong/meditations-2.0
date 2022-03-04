@@ -2,106 +2,95 @@ import { View, Text, Dimensions, StyleSheet } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
 import { VictoryPie } from 'victory-native';
 import { myContext } from '../App';
-import { Picker } from '@react-native-picker/picker';
 import moment from 'moment';
 
-const MoodPiechart = () => {
+const MoodPiechart = ({daysAgo}) => {
 
   const { arrOfCards } = useContext(myContext);
   //used to store moods extracted from arrOfCards
   const [arrOfMoods, setArrOfMoods] = useState([]);
-  //For user to select their moods for the past 'daySelect' days
-  const [daySelect, setDaySelect] = useState(7)
-
-  //get all cards and filter through daySelect and pass only their moods into moodHandler
+  
+  //get all cards and filter through daysAgo and pass only their moods into moodHandler
   useEffect(() => {
     try {
-      console.log('today: ' + moment());
-      let todayMinusDaySelect = moment() - (daySelect * 24 * 60 * 60 * 1000);
-      let cardsForTheLast = arrOfCards.filter(card => moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() > todayMinusDaySelect ? card : null)
-      let moods = cardsForTheLast.map(card => card.mood)
+      console.log(moment().startOf('day'));
+      let moods=[]  //array of moods to be passed into moodHandler
+      //if user select 1,7, and 30 days
+      if(daysAgo!=0){
+        let todayMinusdaysAgo = moment().startOf('date').subtract(daysAgo-1,'d');
+        let cardsForTheLast = arrOfCards.filter(card => moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() > todayMinusdaysAgo)
+        moods = cardsForTheLast.map(card => card.mood)
+      }else{//if user select all days
+        moods = arrOfCards.map(card=>card.mood)
+      }
       console.log(moods);
       moodHandler(moods);
     } catch (e) {
       console.log(e)
     }
-  }, [arrOfCards, daySelect])
+  }, [arrOfCards, daysAgo])
 
   //count the number of each mood and set arrOfMoods state with data which will be used by the pie chart
   const moodHandler = (moods) => {
-    let lovingCount = 0;
-    let excitedCount = 0;
-    let happyCount = 0;
-    let calmCount = 0;
-    let numbCount = 0;
-    let sadCount = 0;
-    let scaredCount = 0;
-    let angryCount = 0;
+    const moodCount={
+      'Loving':0,
+      'Excited':0,
+      'Happy':0,
+      'Calm':0,
+      'Numb':0,
+      'Sad':0,
+      'Scared':0,
+      'Angry':0
+    };
 
     moods.forEach(mood => {
       switch (mood) {
         case 'Loving':
-          lovingCount++
+          moodCount.Loving++
           break;
         case 'Excited':
-          excitedCount++
+          moodCount.Excited++
           break;
         case 'Happy':
-          happyCount++
+          moodCount.Happy++
           break;
         case 'Calm':
-          calmCount++
+          moodCount.Calm++
           break;
         case 'Numb':
-          numbCount++
+          moodCount.Numb++
           break;
         case 'Sad':
-          sadCount++
+          moodCount.Sad++
           break;
         case 'Scared':
-          scaredCount++
+          moodCount.Scared++
           break;
         case 'Angry':
-          angryCount++
+          moodCount.Angry++
           break;
         default:
           break;
       }
     });
     setArrOfMoods([
-      { x: 'Loving', y: lovingCount, label: lovingCount != 0 ? 'Loving' : ' ' },
-      { x: 'Excited', y: excitedCount, label: excitedCount != 0 ? 'Excited' : ' ' },
-      { x: 'Happy', y: happyCount, label: happyCount != 0 ? 'Happy' : ' ' },
-      { x: 'Calm', y: calmCount, label: calmCount != 0 ? 'Calm' : ' ' },
-      { x: 'Numb', y: numbCount, label: numbCount != 0 ? 'Numb' : ' ' },
-      { x: 'Sad', y: sadCount, label: sadCount != 0 ? 'Sad' : ' ' },
-      { x: 'Scared', y: scaredCount, label: scaredCount != 0 ? 'Scared' : ' ' },
-      { x: 'Angry', y: angryCount, label: angryCount != 0 ? 'Angry' : ' ' },
+      { x: 'Loving', y: moodCount.Loving, label: moodCount.Loving > 0 ? 'Loving' : ' ' },
+      { x: 'Excited', y: moodCount.Excited, label: moodCount.Excited > 0 ? 'Excited' : ' ' },
+      { x: 'Happy', y: moodCount.Happy, label:moodCount.Happy > 0 ? 'Happy' : ' ' },
+      { x: 'Calm', y: moodCount.Calm, label: moodCount.Calm > 0 ? 'Calm' : ' ' },
+      { x: 'Numb', y: moodCount.Numb, label: moodCount.Numb > 0 ? 'Numb' : ' ' },
+      { x: 'Sad', y: moodCount.Sad, label: moodCount.Sad > 0 ? 'Sad' : ' ' },
+      { x: 'Scared', y: moodCount.Scared, label: moodCount.Scared > 0 ? 'Scared' : ' ' },
+      { x: 'Angry', y: moodCount.Angry, label: moodCount.Angry > 0 ? 'Angry' : ' ' },
     ])
   }
 
 
 
-  const chartHeight = Dimensions.get('window').height * 0.4;
+  const chartHeight = Dimensions.get('window').height * 0.35;
   return (
     <View>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Your mood for the last</Text>
-        <View>
-          <Picker
-            selectedValue={daySelect}
-            onValueChange={(itemValue) => setDaySelect(itemValue)}
-            style={styles.dropdownBtn}
-            mode='dropdown'
-            itemStyle={{ fontSize: 30 }}>
-            <Picker.Item label="1" value={1} />
-            <Picker.Item label="7" value={7} />
-            <Picker.Item label="30" value={30} />
-            <Picker.Item label="all" value={100000} />
-          </Picker>
-        </View>
-        <Text style={styles.headerText}>day</Text>
-      </View>
+      
 
       <VictoryPie
         data={arrOfMoods}
@@ -116,25 +105,12 @@ const MoodPiechart = () => {
   )
 }
 
+MoodPiechart.defaultProps={
+  daysAgo:7
+}
+
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20
-  },
-  dropdownBtn: {
-    width: 100,
-  },
-  dropdownStyle: {
-    width: 30,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  headerText: {
-    fontSize: 20,
-    color: '#523A28'
-  }
+ 
 })
 
 export default MoodPiechart
