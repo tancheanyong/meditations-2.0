@@ -1,1 +1,1 @@
-Currently under construction :)
+A diary app to write down advice for yourself, and to track your mood. 

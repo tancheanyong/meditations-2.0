@@ -15,6 +15,7 @@ const MoodLinechart = ({daysAgo}) => {
       // console.log('today: ' + moment());
       // let todayMinusdaysAgo = moment().startOf('date').subtract(daysAgo,'d');
       let moodsCountPerDay=[]
+      let data = {}
       for(let i =0;i<daysAgo;i++){
         let todayMinusdaysAgo=moment().startOf('date').subtract(i,'d');
         let cardsForTheLast = arrOfCards.filter(card => moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() > todayMinusdaysAgo)
@@ -79,7 +80,7 @@ const MoodLinechart = ({daysAgo}) => {
 
   return (
     <VictoryChart height={chartHeight} width={chartWidth}>
-      {/* {NoOfCardsPosted?<VictoryLine
+      {NoOfCardsPosted?<VictoryLine
         style={{
           data: { stroke: "#c43a31" },
         }}
@@ -90,7 +91,7 @@ const MoodLinechart = ({daysAgo}) => {
           { x: moment().subtract(4,'d').format('DD/MM'), y: NoOfCardsPosted[3] },
           { x: moment().subtract(3,'d').format('DD/MM'), y: NoOfCardsPosted[4] }
         ]}
-      />:null} */}
+      />:null}
       
     </VictoryChart>
   )
