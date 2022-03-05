@@ -32,7 +32,7 @@ const Mood = () => {
       <View style={styles.chartsContainer}>
         <MoodPiechart daysAgo={daysAgo} />
 
-        {/* <MoodLinechart daysAgo={daysAgo}/> */}
+        <MoodLinechart daysAgo={daysAgo}/>
 
       </View>
 
