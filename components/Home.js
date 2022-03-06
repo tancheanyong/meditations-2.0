@@ -34,7 +34,35 @@ const Home = () => {
       'text': 'A day ago',
       'mood': 'Sad',
       'date':'25 feb 2022, 00:00:00'
-    }
+    },
+    {
+      'key': '2022 03 02, 00:00:00',
+      'title': '0',
+      'text': 'A day ago',
+      'mood': 'Scared',
+      'date':'25 feb 2022, 00:00:00'
+    },
+    {
+      'key': '2022 03 05, 00:00:00',
+      'title': '0',
+      'text': 'A day ago',
+      'mood': 'Angry',
+      'date':'25 feb 2022, 00:00:00'
+    },
+    {
+      'key': '2022 03 04, 00:00:00',
+      'title': '0',
+      'text': 'A day ago',
+      'mood': 'Happy',
+      'date':'25 feb 2022, 00:00:00'
+    },
+    {
+      'key': '2022 03 02, 00:00:00',
+      'title': '0',
+      'text': 'A day ago',
+      'mood': 'Sad',
+      'date':'25 feb 2022, 00:00:00'
+    },
   ]
 
   return (

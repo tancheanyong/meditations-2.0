@@ -87,7 +87,7 @@ const MoodPiechart = ({daysAgo}) => {
 
 
 
-  const chartHeight = Dimensions.get('window').height * 0.35;
+  const chartHeight = Dimensions.get('window').height * 0.4;
   return (
     <View>
       

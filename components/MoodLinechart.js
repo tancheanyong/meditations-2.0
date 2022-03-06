@@ -1,8 +1,9 @@
-import { View, Text, Dimensions } from 'react-native'
+import { View, Text, Dimensions, StyleSheet } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
-import { VictoryPie, VictoryChart, VictoryLine, VictoryAxis } from 'victory-native';
+import { VictoryPie, VictoryChart, VictoryLine, VictoryAxis, VictoryLegend } from 'victory-native';
 import { myContext } from '../App';
 import moment from 'moment';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const MoodLinechart = ({ daysAgo }) => {
   const { arrOfCards } = useContext(myContext);
@@ -61,98 +62,158 @@ const MoodLinechart = ({ daysAgo }) => {
 
   const chartHeight = Dimensions.get('window').height * 0.4;
   const chartWidth = Dimensions.get('window').width * 0.9;
+  const windowWidth=Dimensions.get('window').width;
 
   return (
-    <VictoryChart height={chartHeight} width={chartWidth} animate={{duration: 1000}}>
-      <VictoryAxis dependentAxis label='Count' tickFormat={tick=>Math.round(tick)}/>
-      <VictoryAxis label='Date' fixLabelOverlap={true}/>
-      {/* Total count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "black" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.totalCtn } })}
-        />
-        : null}
-      {/* Loving count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#632000" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.lovingCtn } })}
-        />
-        : null}
-      {/* excited count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#7C3600" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.excitedCtn } })}
-        />
-        : null}
-      {/* happy count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#964B00" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.happyCtn } })}
-        />
-        : null}
-      {/* calm count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#C46200" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.calmCtn } })}
-        />
-        : null}
-      {/* numb count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#F27900" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.numbCtn } })}
-        />
-        : null}
-      {/* sad count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#FF9021" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.sadCtn } })}
-        />
-        : null}
-      {/* scared count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#FFA74F" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.scaredCtn } })}
-        />
-        : null}
-      {/* angry count line */}
-      {data.length ?
-        <VictoryLine
-          style={{
-            data: { stroke: "#FFBE7C" },
-          }}
-          data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.angryCtn } })}
-        />
-        : null}
-    </VictoryChart>
+    <View>
+      <VictoryChart height={chartHeight} width={chartWidth} animate={{ duration: 1000 }}>
+        <VictoryAxis dependentAxis label='Count' tickFormat={tick => Math.round(tick)} />
+        <VictoryAxis label='Date' fixLabelOverlap={true} />
+        {/* Total count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "black" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.totalCtn } })}
+          />
+          : null}
+        {/* Loving count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#632000" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.lovingCtn } })}
+          />
+          : null}
+        {/* excited count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#7C3600" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.excitedCtn } })}
+          />
+          : null}
+        {/* happy count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#964B00" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.happyCtn } })}
+          />
+          : null}
+        {/* calm count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#C46200" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.calmCtn } })}
+          />
+          : null}
+        {/* numb count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#F27900" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.numbCtn } })}
+          />
+          : null}
+        {/* sad count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#FF9021" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.sadCtn } })}
+          />
+          : null}
+        {/* scared count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#FFA74F" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.scaredCtn } })}
+          />
+          : null}
+        {/* angry count line */}
+        {data.length ?
+          <VictoryLine
+            style={{
+              data: { stroke: "#FFBE7C" },
+            }}
+            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.angryCtn } })}
+          />
+          : null}
+      </VictoryChart>
+      <View style={[styles.legends,{width:chartWidth}]}>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'black'}]}></View>
+          <Text style={styles.legendText}>Total</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#632000'}]}></View>
+          <Text style={styles.legendText}>Loving</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#7C3600'}]}></View>
+          <Text style={styles.legendText}>Excited</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#964B00'}]}></View>
+          <Text style={styles.legendText}>Happy</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#C46200'}]}></View>
+          <Text style={styles.legendText}>Calm</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#F27900'}]}></View>
+          <Text style={styles.legendText}>Numb</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#FF9021'}]}></View>
+          <Text style={styles.legendText}>Sad</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#FFA74F'}]}></View>
+          <Text style={styles.legendText}>Scared</Text>
+        </Pressable>
+        <Pressable style={styles.legendBtn}>
+          <View style={[styles.legendDot,{backgroundColor:'#FFBE7C'}]}></View>
+          <Text style={styles.legendText}>Angry</Text>
+        </Pressable>
+      </View>
+    </View>
   )
 }
 
 MoodLinechart.defaultProps = {
   daysAgo: 7
 }
+
+const styles = StyleSheet.create({
+  legends: {
+    flexDirection:'row',
+    flexWrap:'wrap',
+    justifyContent:'center'
+  },
+  legendBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin:10
+  },
+  legendDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    margin: 5,
+  }
+})
 
 export default MoodLinechart
