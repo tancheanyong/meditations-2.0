@@ -18,7 +18,7 @@ const CurrentModal = ({ modalVisible, setModalVisible, currentModalCard }) => {
                     <Text style={styles.cardTitle}>{currentModalCard.title}</Text>
                     <View style={styles.cardInfo}>
                         <Text style={styles.cardInfoText}>{currentModalCard.mood}</Text>
-                        <Text style={styles.cardInfoText}>{currentModalCard.key}</Text>
+                        <Text style={styles.cardInfoText}>{currentModalCard.date}</Text>
                     </View>
 
                     {/* default modal card text shown, hides when edit button is pressed, show TextInput when edit button is pressed */}

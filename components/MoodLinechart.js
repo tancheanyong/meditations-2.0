@@ -1,16 +1,33 @@
-import { View, Text, Dimensions, StyleSheet } from 'react-native'
-import React, { useContext, useState, useEffect } from 'react'
-import { VictoryPie, VictoryChart, VictoryLine, VictoryAxis, VictoryLegend } from 'victory-native';
-import { myContext } from '../App';
+import {View, Text, Dimensions, StyleSheet} from 'react-native';
+import React, {useContext, useState, useEffect} from 'react';
+import {
+  VictoryPie,
+  VictoryChart,
+  VictoryLine,
+  VictoryAxis,
+  VictoryLegend,
+} from 'victory-native';
+import {myContext} from '../App';
 import moment from 'moment';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
-const MoodLinechart = ({ daysAgo }) => {
-  const { arrOfCards } = useContext(myContext);
+const MoodLinechart = ({daysAgo}) => {
+  const {arrOfCards} = useContext(myContext);
   //used to store moods extracted from arrOfCards
   const [arrOfMoods, setArrOfMoods] = useState([]);
   //store date based on daysAgo determined by user
   const [data, setData] = useState([]);
+
+  //toggle for line chart
+  const [totalLine, setTotalLine] = useState(true);
+  const [lovingLine, setLovingLine] = useState(true);
+  const [excitedLine, setExcitedLine] = useState(true);
+  const [happyLine, setHapppyLine] = useState(true);
+  const [calmLine, setCalmLine] = useState(true);
+  const [numbLine, setNumbLine] = useState(true);
+  const [sadLine, setSadLine] = useState(true);
+  const [scaredLine, setScaredLine] = useState(true);
+  const [angryLine, setAngryLine] = useState(true);
 
   //get all cards and filter through daysAgo and pass only their moods into moodHandler
   useEffect(() => {
@@ -18,10 +35,12 @@ const MoodLinechart = ({ daysAgo }) => {
       const arrOfDates = [];
       //loop through each date since today for daysAgo days, and put these dates into arrOfDates
       for (let i = 0; i < daysAgo; i++) {
-        arrOfDates.push(moment().startOf('date').subtract(i, 'd').format('DD/MM'));
+        arrOfDates.push(
+          moment().startOf('date').subtract(i, 'd').format('DD/MM'),
+        );
       }
       //arrOfData is an array of objects containing a date, and the mood counts on that date
-      let arrOfData = arrOfDates.map((date) => {
+      let arrOfData = arrOfDates.map(date => {
         return {
           date: date,
           totalCtn: countFunc('Total', date),
@@ -33,187 +52,255 @@ const MoodLinechart = ({ daysAgo }) => {
           sadCtn: countFunc('Sad', date),
           scaredCtn: countFunc('Scared', date),
           angryCtn: countFunc('Angry', date),
-        }
-      })
+        };
+      });
       //put all required data into data state
-      setData(arrOfData.reverse())
+      setData(arrOfData.reverse());
       console.log(data);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }, [arrOfCards, daysAgo])
+  }, [arrOfCards, daysAgo]);
 
   //take in a mood and a date, and return the number of that mood in that date
   const countFunc = (moodType, date) => {
     let ctn = 0;
     //get the cards that is posted on 'date' day
-    let cardsToday = arrOfCards.filter(card => moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() >= moment(date, 'DD/MM').valueOf() && moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() < moment(date, 'DD/MM').add(1, 'd').valueOf())
+    let cardsToday = arrOfCards.filter(
+      card =>
+        moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() >=
+          moment(date, 'DD/MM').valueOf() &&
+        moment(card.key, 'YYYY MM DD, kk:mm:ss').valueOf() <
+          moment(date, 'DD/MM').add(1, 'd').valueOf(),
+    );
     if (moodType === 'Total') {
-      return cardsToday.length
+      return cardsToday.length;
     } else {
-      cardsToday.forEach((card) => {
+      cardsToday.forEach(card => {
         if (card.mood === moodType) {
-          ctn++
+          ctn++;
         }
-      })
-      return ctn
+      });
+      return ctn;
     }
-  }
+  };
 
   const chartHeight = Dimensions.get('window').height * 0.4;
   const chartWidth = Dimensions.get('window').width * 0.9;
-  const windowWidth=Dimensions.get('window').width;
+  const windowWidth = Dimensions.get('window').width;
 
   return (
     <View>
-      <VictoryChart height={chartHeight} width={chartWidth} animate={{ duration: 1000 }}>
-        <VictoryAxis dependentAxis label='Count' tickFormat={tick => Math.round(tick)} />
-        <VictoryAxis label='Date' fixLabelOverlap={true} />
+      <VictoryChart
+        height={chartHeight}
+        width={chartWidth}
+        animate={{duration: 1000}}>
+        <VictoryAxis
+          dependentAxis
+          label="Count"
+          tickFormat={tick => Math.round(tick)}
+        />
+        <VictoryAxis label="Date" fixLabelOverlap={true} />
         {/* Total count line */}
-        {data.length ?
+        {data.length && totalLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "black" },
+              data: {stroke: 'black'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.totalCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.totalCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* Loving count line */}
-        {data.length ?
+        {data.length && lovingLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#632000" },
+              data: {stroke: '#632000'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.lovingCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.lovingCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* excited count line */}
-        {data.length ?
+        {data.length && excitedLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#7C3600" },
+              data: {stroke: '#7C3600'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.excitedCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.excitedCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* happy count line */}
-        {data.length ?
+        {data.length && happyLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#964B00" },
+              data: {stroke: '#964B00'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.happyCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.happyCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* calm count line */}
-        {data.length ?
+        {data.length && calmLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#C46200" },
+              data: {stroke: '#C46200'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.calmCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.calmCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* numb count line */}
-        {data.length ?
+        {data.length && numbLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#F27900" },
+              data: {stroke: '#F27900'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.numbCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.numbCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* sad count line */}
-        {data.length ?
+        {data.length && sadLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#FF9021" },
+              data: {stroke: '#FF9021'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.sadCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.sadCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* scared count line */}
-        {data.length ?
+        {data.length && scaredLine ? (
           <VictoryLine
             style={{
-              data: { stroke: "#FFA74F" },
+              data: {stroke: '#FFA74F'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.scaredCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.scaredCtn};
+            })}
           />
-          : null}
+        ) : null}
         {/* angry count line */}
-        {data.length ?
+        {data.length && angryLine ? (
           <VictoryLine
+            display="hidden"
             style={{
-              data: { stroke: "#FFBE7C" },
+              data: {stroke: '#FFBE7C'},
             }}
-            data={data.map(dataPoint => { return { x: dataPoint.date, y: dataPoint.angryCtn } })}
+            data={data.map(dataPoint => {
+              return {x: dataPoint.date, y: dataPoint.angryCtn};
+            })}
           />
-          : null}
+        ) : null}
       </VictoryChart>
-      <View style={[styles.legends,{width:chartWidth}]}>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'black'}]}></View>
+      <View style={[styles.legends, {width: chartWidth}]}>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setTotalLine(false) : setTotalLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: 'black'}]}></View>
           <Text style={styles.legendText}>Total</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#632000'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setLovingLine(false) : setLovingLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#632000'}]}></View>
           <Text style={styles.legendText}>Loving</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#7C3600'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setExcitedLine(false) : setExcitedLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#7C3600'}]}></View>
           <Text style={styles.legendText}>Excited</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#964B00'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setHappyLine(false) : setHappyLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#964B00'}]}></View>
           <Text style={styles.legendText}>Happy</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#C46200'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setCalmLine(false) : setCalmLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#C46200'}]}></View>
           <Text style={styles.legendText}>Calm</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#F27900'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setNumbLine(false) : setNumbLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#F27900'}]}></View>
           <Text style={styles.legendText}>Numb</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#FF9021'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setSadLine(false) : setSadLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#FF9021'}]}></View>
           <Text style={styles.legendText}>Sad</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#FFA74F'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setScaredLine(false) : setScaredLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#FFA74F'}]}></View>
           <Text style={styles.legendText}>Scared</Text>
         </Pressable>
-        <Pressable style={styles.legendBtn}>
-          <View style={[styles.legendDot,{backgroundColor:'#FFBE7C'}]}></View>
+        <Pressable
+          style={styles.legendBtn}
+          onPress={() =>
+            totalLine ? setAngryLine(false) : setAngryLine(true)
+          }>
+          <View style={[styles.legendDot, {backgroundColor: '#FFBE7C'}]}></View>
           <Text style={styles.legendText}>Angry</Text>
         </Pressable>
       </View>
     </View>
-  )
-}
+  );
+};
 
 MoodLinechart.defaultProps = {
-  daysAgo: 7
-}
+  daysAgo: 7,
+};
 
 const styles = StyleSheet.create({
   legends: {
-    flexDirection:'row',
-    flexWrap:'wrap',
-    justifyContent:'center'
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   legendBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin:10
+    margin: 10,
   },
   legendDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
     margin: 5,
-  }
-})
+  },
+});
 
-export default MoodLinechart
+export default MoodLinechart;
