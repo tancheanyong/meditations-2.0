@@ -22,7 +22,7 @@ const MoodLinechart = ({daysAgo}) => {
   const [totalLine, setTotalLine] = useState(true);
   const [lovingLine, setLovingLine] = useState(true);
   const [excitedLine, setExcitedLine] = useState(true);
-  const [happyLine, setHapppyLine] = useState(true);
+  const [happyLine, setHappyLine] = useState(true);
   const [calmLine, setCalmLine] = useState(true);
   const [numbLine, setNumbLine] = useState(true);
   const [sadLine, setSadLine] = useState(true);
@@ -202,6 +202,7 @@ const MoodLinechart = ({daysAgo}) => {
           />
         ) : null}
       </VictoryChart>
+      {/* Legend buttons */}
       <View style={[styles.legends, {width: chartWidth}]}>
         <Pressable
           style={styles.legendBtn}
@@ -214,7 +215,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setLovingLine(false) : setLovingLine(true)
+            lovingLine ? setLovingLine(false) : setLovingLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#632000'}]}></View>
           <Text style={styles.legendText}>Loving</Text>
@@ -222,7 +223,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setExcitedLine(false) : setExcitedLine(true)
+            excitedLine ? setExcitedLine(false) : setExcitedLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#7C3600'}]}></View>
           <Text style={styles.legendText}>Excited</Text>
@@ -230,7 +231,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setHappyLine(false) : setHappyLine(true)
+            happyLine ? setHappyLine(false) : setHappyLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#964B00'}]}></View>
           <Text style={styles.legendText}>Happy</Text>
@@ -238,7 +239,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setCalmLine(false) : setCalmLine(true)
+            calmLine ? setCalmLine(false) : setCalmLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#C46200'}]}></View>
           <Text style={styles.legendText}>Calm</Text>
@@ -246,7 +247,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setNumbLine(false) : setNumbLine(true)
+            numbLine ? setNumbLine(false) : setNumbLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#F27900'}]}></View>
           <Text style={styles.legendText}>Numb</Text>
@@ -254,7 +255,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setSadLine(false) : setSadLine(true)
+            sadLine ? setSadLine(false) : setSadLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#FF9021'}]}></View>
           <Text style={styles.legendText}>Sad</Text>
@@ -262,7 +263,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setScaredLine(false) : setScaredLine(true)
+            scaredLine ? setScaredLine(false) : setScaredLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#FFA74F'}]}></View>
           <Text style={styles.legendText}>Scared</Text>
@@ -270,7 +271,7 @@ const MoodLinechart = ({daysAgo}) => {
         <Pressable
           style={styles.legendBtn}
           onPress={() =>
-            totalLine ? setAngryLine(false) : setAngryLine(true)
+            angryLine ? setAngryLine(false) : setAngryLine(true)
           }>
           <View style={[styles.legendDot, {backgroundColor: '#FFBE7C'}]}></View>
           <Text style={styles.legendText}>Angry</Text>
@@ -296,9 +297,9 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   legendDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+    width: 15,
+    height: 15,
+    borderRadius: 7.5,
     margin: 5,
   },
 });
